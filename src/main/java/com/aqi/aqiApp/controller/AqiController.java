@@ -27,6 +27,15 @@ public class AqiController {
 
 
     }
+    @GetMapping("/weather/{city}")
+    public String aqi2(@PathVariable String city) {
+
+        return aqiService.aqiResponse(city);
+
+
+    }
+
+
 
 }
 
