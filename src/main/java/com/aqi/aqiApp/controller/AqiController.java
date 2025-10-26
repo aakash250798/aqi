@@ -3,6 +3,8 @@ package com.aqi.aqiApp.controller;
 
 import com.aqi.aqiApp.service.AqiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,31 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AqiController {
 
-
     @Autowired
     AqiService aqiService;
 
-    @RequestMapping("/hello")
-    public String helloWorld() {
-        return "Hello world";
+    @RequestMapping("/")
+    public ResponseEntity<String> helloWorld() {
+        return new ResponseEntity<>(" This application is useful for finding AQI of a city using city name, location ..", HttpStatus.OK);
     }
 
-    @GetMapping("/weather/{longitute}/{latitude}")
-    public String aqi(@PathVariable Double longitute, @PathVariable Double latitude) {
-
+    @GetMapping("/aqi/{longitute}/{latitude}")
+    public ResponseEntity<String> aqiByLocation(@PathVariable Double longitute, @PathVariable Double latitude) {
         return aqiService.aqiResponse(longitute,latitude);
 
-
     }
-    @GetMapping("/weather/{city}")
-    public String aqi2(@PathVariable String city) {
-
+    @GetMapping("/aqi/{city}")
+    public ResponseEntity<String> aqiByCityName(@PathVariable String city) {
         return aqiService.aqiResponse(city);
-
-
     }
-
-
 
 }
 

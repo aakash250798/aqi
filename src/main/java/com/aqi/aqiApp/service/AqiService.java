@@ -1,6 +1,7 @@
 package com.aqi.aqiApp.service;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,14 +21,19 @@ public class AqiService {
     @Autowired
     RestTemplate restTemplate;
 
-    public String aqiResponse (Double longitute, Double latitude){
+
+    private Logger logger = LoggerFactory.getLogger(AqiService.class);
+
+
+    public ResponseEntity<String> aqiResponse (Double longitute, Double latitude){
 
         Properties props = new Properties();
 
         try (FileInputStream fis = new FileInputStream("src/main/resources/.env")) {
             props.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) {
+            logger.error("--- env variable API_KEY empty");
         }
 
         String apiKey = props.getProperty("API_KEY");
@@ -39,10 +45,10 @@ public class AqiService {
 
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-        return response.getBody();
+        return response;
     }
 
-    public String aqiResponse (String city){
+    public ResponseEntity<String> aqiResponse (String city){
 
         Properties props = new Properties();
 
@@ -71,6 +77,6 @@ public class AqiService {
 
         ResponseEntity<String> response1 = restTemplate.getForEntity(url, String.class);
 
-        return response1.getBody();
+        return response1;
     }
 }
